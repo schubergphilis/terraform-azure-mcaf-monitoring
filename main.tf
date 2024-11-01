@@ -1,5 +1,3 @@
-data "azurerm_client_config" "current" {}
-
 resource "azurerm_resource_group" "this" {
   name     = var.resource_group.name
   location = var.location
@@ -26,7 +24,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git"
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git" #TODO: change source
   count  = var.storage_account != null ? 1 : 0
 
   name                     = var.storage_account.name
