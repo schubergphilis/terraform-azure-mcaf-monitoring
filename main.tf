@@ -39,7 +39,7 @@ module "storage_account" {
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
   cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
   cmk_key_name                      = var.storage_account.cmk_key_name
-  enable_system_assigned_identity   = var.enable_system_assigned_identity
+  system_assigned_identity_enabled  = var.system_assigned_identity_enabled
   user_assigned_identities          = var.user_assigned_identities
   tags = merge(
     try(var.tags),
