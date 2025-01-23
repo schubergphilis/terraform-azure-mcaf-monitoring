@@ -19,6 +19,7 @@ variable "log_analytics_workspace" {
 variable "storage_account" {
   type = object({
     name                              = string
+    public_network_access_enabled     = optional(bool, false)
     account_tier                      = optional(string, "Standard")
     account_replication_type          = optional(string, "ZRS")
     access_tier                       = optional(string, "Cool")
