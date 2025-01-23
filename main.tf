@@ -24,7 +24,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.2.0"
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=allow-user-assigned-identities"
   count  = var.storage_account != null ? 1 : 0
 
   name                              = var.storage_account.name
@@ -39,6 +39,8 @@ module "storage_account" {
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
   cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
   cmk_key_name                      = var.storage_account.cmk_key_name
+  enable_system_assigned_identity   = var.enable_system_assigned_identity
+  user_assigned_identities          = var.user_assigned_identities
   tags = merge(
     try(var.tags),
     tomap({
