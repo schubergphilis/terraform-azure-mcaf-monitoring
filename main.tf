@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "this" {
-  name     = var.resource_group.name
+  name     = var.resource_group_name
   location = var.location
   tags = merge(
     try(var.tags),
@@ -24,15 +24,20 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git" #TODO: change source
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.2.0"
   count  = var.storage_account != null ? 1 : 0
 
-  name                     = var.storage_account.name
-  location                 = var.location
-  resource_group_name      = azurerm_resource_group.this.name
-  account_tier             = "Standard"
-  access_tier              = var.storage_account.access_tier
-  account_replication_type = var.storage_account.account_replication_type
+  name                              = var.storage_account.name
+  location                          = var.location
+  resource_group_name               = azurerm_resource_group.this.name
+  account_tier                      = var.storage_account.account_tier
+  account_replication_type          = var.storage_account.account_replication_type
+  account_kind                      = "StorageV2"
+  access_tier                       = var.storage_account.access_tier
+  public_network_access_enabled     = var.storage_account.public_network_access_enabled
+  https_traffic_only_enabled        = true
+  infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
+  cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
   tags = merge(
     try(var.tags),
     tomap({
