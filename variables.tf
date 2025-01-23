@@ -30,7 +30,7 @@ variable "storage_account" {
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, null)
-    enable_system_assigned_identity   = optional(bool, false)
+    system_assigned_identity_enabled  = optional(bool, false)
     user_assigned_identities          = optional(list(string), [])
     enable_law_data_export            = optional(bool, false)
   })
