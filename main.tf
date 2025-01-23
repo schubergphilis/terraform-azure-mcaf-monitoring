@@ -38,6 +38,7 @@ module "storage_account" {
   https_traffic_only_enabled        = true
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
   cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
+  cmk_key_name                      = var.storage_account.cmk_key_name
   tags = merge(
     try(var.tags),
     tomap({
@@ -58,8 +59,8 @@ resource "azurerm_storage_management_policy" "this" {
     }
     actions {
       base_blob {
-        delete_after_days_since_modification_greater_than = var.storage_account.log_retention_days
-        tier_to_cold_after_days_since_creation_greater_than = var.storage_account.move_to_cold_after_days
+        delete_after_days_since_modification_greater_than      = var.storage_account.log_retention_days
+        tier_to_cold_after_days_since_creation_greater_than    = var.storage_account.move_to_cold_after_days
         tier_to_archive_after_days_since_creation_greater_than = var.storage_account.move_to_archive_after_days
       }
       snapshot {
@@ -77,7 +78,7 @@ resource "azurerm_storage_management_policy" "this" {
 # }
 
 resource "azurerm_log_analytics_data_export_rule" "this" {
-  count = var.storage_account.use_law_data_export ? 1 : 0
+  count = var.storage_account.enable_law_data_export ? 1 : 0
 
   name                    = "Export-To-Storage"
   resource_group_name     = azurerm_resource_group.this.name
