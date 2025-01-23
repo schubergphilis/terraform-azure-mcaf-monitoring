@@ -22,11 +22,15 @@ variable "storage_account" {
     account_tier                      = optional(string, "Standard")
     account_replication_type          = optional(string, "ZRS")
     access_tier                       = optional(string, "Cool")
-    log_retention_days                = optional(number, 90)
+    log_retention_days                = optional(number, null)
+    move_to_cold_after_days           = optional(number, null)
+    move_to_archive_after_days        = optional(number, null)
     snapshot_retention_days           = optional(number, 90)
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, null)
+    use_law_data_export               = optional(bool, false)
+
   })
   default = null
 }

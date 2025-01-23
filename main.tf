@@ -49,7 +49,6 @@ module "storage_account" {
 resource "azurerm_storage_management_policy" "this" {
   count = var.storage_account != null ? 1 : 0
 
-  # TODO: Expand these rules with tiering settings
   storage_account_id = module.storage_account[0].id
   rule {
     name    = "Log retention Days"
@@ -60,6 +59,8 @@ resource "azurerm_storage_management_policy" "this" {
     actions {
       base_blob {
         delete_after_days_since_modification_greater_than = var.storage_account.log_retention_days
+        tier_to_cold_after_days_since_creation_greater_than = var.storage_account.move_to_cold_after_days
+        tier_to_archive_after_days_since_creation_greater_than = var.storage_account.move_to_archive_after_days
       }
       snapshot {
         delete_after_days_since_creation_greater_than = var.storage_account.snapshot_retention_days
@@ -68,8 +69,15 @@ resource "azurerm_storage_management_policy" "this" {
   }
 }
 
+# resource "azurerm_storage_container_immutability_policy" "example" {
+#   storage_container_resource_manager_id = azurerm_storage_container.example.resource_manager_id
+#   immutability_period_in_days           = 14
+#   protected_append_writes_all_enabled   = false
+#   protected_append_writes_enabled       = true
+# }
+
 resource "azurerm_log_analytics_data_export_rule" "this" {
-  count = var.storage_account != null ? 1 : 0
+  count = var.storage_account.use_law_data_export ? 1 : 0
 
   name                    = "Export-To-Storage"
   resource_group_name     = azurerm_resource_group.this.name
