@@ -17,9 +17,7 @@ provider "azurerm" {
 module "without_storage_account" {
   source = "../.."
 
-  resource_group = {
-    name = "example-resource-group"
-  }
+  resource_group_name = "example-resource-group"
 
   log_analytics_workspace = {
     name = "example-log-analytics-workspace"
@@ -32,9 +30,7 @@ module "without_storage_account" {
 module "with_storage_account" {
   source = "../.."
 
-  resource_group = {
-    name = "example-resource-group2"
-  }
+  resource_group_name = "example-resource-group"
 
   log_analytics_workspace = {
     name = "example-log-analytics-workspace2"
