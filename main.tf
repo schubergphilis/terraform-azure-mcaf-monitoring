@@ -41,6 +41,7 @@ module "storage_account" {
   cmk_key_name                      = var.storage_account.cmk_key_name
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
+  immutability_policy               = var.immutability_policy
   tags = merge(
     try(var.tags),
     tomap({
