@@ -37,7 +37,7 @@ variable "storage_account" {
       state                         = optional(string, "Unlocked")
       allow_protected_append_writes = optional(bool, true)
       period_since_creation_in_days = optional(number, 14)
-    }, null))
+    }), null)
   })
   default = null
 }
