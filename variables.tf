@@ -33,6 +33,11 @@ variable "storage_account" {
     system_assigned_identity_enabled  = optional(bool, false)
     user_assigned_identities          = optional(list(string), [])
     enable_law_data_export            = optional(bool, false)
+    immutability_policy = optional(object({
+      state                         = optional(string, "Unlocked")
+      allow_protected_append_writes = optional(bool, true)
+      period_since_creation_in_days = optional(number, 14)
+    }, null))
   })
   default = null
 }
