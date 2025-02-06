@@ -1,6 +1,6 @@
 variable "resource_group_name" {
-  description = "The name of the resource group in which to create the resources."
   type        = string
+  description = "The name of the resource group in which to create the resources."
 }
 
 variable "location" {
@@ -13,20 +13,16 @@ variable "log_analytics_workspace" {
     name                            = string
     allow_resource_only_permissions = optional(bool, false)
     sku                             = optional(string, "PerGB2018")
+    tags                            = optional(map(string), {})
   })
 }
 
 variable "storage_account" {
   type = object({
     name                              = string
-    public_network_access_enabled     = optional(bool, false)
     account_tier                      = optional(string, "Standard")
     account_replication_type          = optional(string, "ZRS")
     access_tier                       = optional(string, "Cool")
-    log_retention_days                = optional(number, null)
-    move_to_cold_after_days           = optional(number, null)
-    move_to_archive_after_days        = optional(number, null)
-    snapshot_retention_days           = optional(number, 90)
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, null)
@@ -38,6 +34,24 @@ variable "storage_account" {
       allow_protected_append_writes = optional(bool, true)
       period_since_creation_in_days = optional(number, 14)
     }), null)
+    storage_management_policy = optional(object({
+      blob_delete_retention_days      = optional(number, 90)
+      container_delete_retention_days = optional(number, 90)
+      move_to_cool_after_days         = optional(number, null)
+      move_to_cold_after_days         = optional(number, null)
+      move_to_archive_after_days      = optional(number, null)
+      delete_after_days               = optional(number, null)
+    }), {})
+    network_configuration = optional(object({
+      https_traffic_only_enabled      = optional(bool, true)
+      allow_nested_items_to_be_public = optional(bool, false)
+      public_network_access_enabled   = optional(bool, false)
+      default_action                  = optional(string, "Deny")
+      virtual_network_subnet_ids      = optional(list(string), [])
+      ip_rules                        = optional(list(string), [])
+      bypass                          = optional(list(string), ["AzureServices"])
+    }), {})
+    tags                            = optional(map(string), {})
   })
   default = null
 }

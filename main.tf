@@ -17,6 +17,7 @@ resource "azurerm_log_analytics_workspace" "this" {
   sku                             = var.log_analytics_workspace.sku
   tags = merge(
     try(var.tags),
+    try(var.log_analytics_workspace.tags),
     tomap({
       "Resource Type" = "Log Analytics Workspace"
     })
@@ -24,7 +25,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.4.0"
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.5.0"
   count  = var.storage_account != null ? 1 : 0
 
   name                              = var.storage_account.name
@@ -33,44 +34,18 @@ module "storage_account" {
   account_tier                      = var.storage_account.account_tier
   account_replication_type          = var.storage_account.account_replication_type
   account_kind                      = "StorageV2"
-  access_tier                       = var.storage_account.access_tier
-  public_network_access_enabled     = var.storage_account.public_network_access_enabled
-  https_traffic_only_enabled        = true
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
   cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
   cmk_key_name                      = var.storage_account.cmk_key_name
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
   immutability_policy               = var.storage_account.immutability_policy
+  network_configuration             = var.storage_account.network_configuration
+  storage_management_policy         = var.storage_account.storage_management_policy
   tags = merge(
     try(var.tags),
-    tomap({
-      "Resource Type" = "Storage Account"
-    })
+    try(var.storage_account.tags)
   )
-}
-
-resource "azurerm_storage_management_policy" "this" {
-  count = var.storage_account != null ? 1 : 0
-
-  storage_account_id = module.storage_account[0].id
-  rule {
-    name    = "Log retention Days"
-    enabled = true
-    filters {
-      blob_types = ["blockBlob"]
-    }
-    actions {
-      base_blob {
-        delete_after_days_since_modification_greater_than      = var.storage_account.log_retention_days
-        tier_to_cold_after_days_since_creation_greater_than    = var.storage_account.move_to_cold_after_days
-        tier_to_archive_after_days_since_creation_greater_than = var.storage_account.move_to_archive_after_days
-      }
-      snapshot {
-        delete_after_days_since_creation_greater_than = var.storage_account.snapshot_retention_days
-      }
-    }
-  }
 }
 
 resource "azurerm_log_analytics_data_export_rule" "this" {
