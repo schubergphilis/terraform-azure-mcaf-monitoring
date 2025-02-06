@@ -53,6 +53,10 @@ variable "storage_account" {
     }), {})
     tags                            = optional(map(string), {})
   })
+  validation {
+    condition     = var.boot_diag_storage_account.storage_management_policy.move_to_archive_after_days != null && contains(["LRS", "GRS", "RAGRS"], var.boot_diag_storage_account.account_replication_type) || var.boot_diag_storage_account.storage_management_policy.move_to_archive_after_days == null
+    error_message = "account_replication_type must be either 'LRS', 'GRS' or 'RAGRS' when archive tiering is enabled"
+  }
   default = null
 }
 
