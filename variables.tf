@@ -90,10 +90,6 @@ variable "storage_account" {
     - `tags` - (Optional) A map of tags to assign to the storage account.
   DESCRIPTION
 
-  validation {
-    condition     = var.storage_account == null || ((var.storage_account.storage_management_policy.move_to_archive_after_days != null && contains(["LRS", "GRS", "RAGRS"], var.storage_account.account_replication_type)) || var.storage_account.storage_management_policy.move_to_archive_after_days == null)
-    error_message = "account_replication_type must be either 'LRS', 'GRS' or 'RAGRS' when archive tiering is enabled"
-  }
   default = null
 }
 
