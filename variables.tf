@@ -60,7 +60,7 @@ variable "storage_account" {
     
     - `name` - (Required) The name of the storage account.
     - `account_tier` - (Optional) The tier of the storage account. Defaults to `Standard`.
-    - `account_replication_type` - (Optional) The replication type for the storage account. Defaults to `GRS` (Geo-Redundant Storage).
+    - `account_replication_type` - (Optional) The replication type for the storage account. Defaults to `GRS` (Geo-Redundant Storage) because archive tier only supports LRS, GRS and RAGRS.
     - `access_tier` - (Optional) The access tier for blobs in the storage account. Defaults to `Cool`.
     - `infrastructure_encryption_enabled` - (Optional) Specifies whether infrastructure encryption is enabled. Defaults to true.
     - `cmk_key_vault_id` - (Optional) The ID of the Key Vault containing the customer-managed key. Defaults to null.
