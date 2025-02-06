@@ -1,3 +1,8 @@
+# terraform-azure-mcaf-monitoring
+Terraform Module to Enable Azure Monitoring
+
+The module default for storage account replication type defaults to GRS because [archive tiering is not supported by ZRS](https://learn.microsoft.com/en-us/azure/storage/blobs/access-tiers-overview#summary-of-access-tier-options).
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
