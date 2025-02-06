@@ -27,7 +27,7 @@ variable "storage_account" {
     cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, null)
     system_assigned_identity_enabled  = optional(bool, false)
-    user_assigned_identities          = optional(list(string), [])
+    user_assigned_identities          = optional(set(string), [])
     enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({
       state                         = optional(string, "Unlocked")
@@ -47,9 +47,9 @@ variable "storage_account" {
       allow_nested_items_to_be_public = optional(bool, false)
       public_network_access_enabled   = optional(bool, false)
       default_action                  = optional(string, "Deny")
-      virtual_network_subnet_ids      = optional(list(string), [])
-      ip_rules                        = optional(list(string), [])
-      bypass                          = optional(list(string), ["AzureServices"])
+      virtual_network_subnet_ids      = optional(set(string), [])
+      ip_rules                        = optional(set(string), [])
+      bypass                          = optional(set(string), ["AzureServices"])
     }), {})
     tags = optional(map(string), {})
   })
@@ -66,7 +66,7 @@ variable "storage_account" {
     - `cmk_key_vault_id` - (Optional) The ID of the Key Vault containing the customer-managed key. Defaults to null.
     - `cmk_key_name` - (Optional) The name of the customer-managed key in the Key Vault. Defaults to null.
     - `system_assigned_identity_enabled` - (Optional) Whether a system-assigned identity is enabled. Defaults to false.
-    - `user_assigned_identities` - (Optional) A list of user-assigned identities.
+    - `user_assigned_identities` - (Optional) A set of user-assigned identities.
     - `enable_law_data_export` - (Optional) Enable the Export rule for Log Analytics Data. Defaults to false.
     - `immutability_policy` - (Optional) Immutability policy configuration. If undefined will not create a Immutability Policy
       - `state` - (Optional) The state of the immutability policy. Defaults to `Unlocked`.
@@ -84,8 +84,8 @@ variable "storage_account" {
       - `allow_nested_items_to_be_public` - (Optional) If nested items can be public. Defaults to false.
       - `public_network_access_enabled` - (Optional) Enables public network access. Defaults to false.
       - `default_action` - (Optional) Default action for network rules when none are matched. Defaults to `Deny`.
-      - `virtual_network_subnet_ids` - (Optional) A list of virtual network subnet IDs.
-      - `ip_rules` - (Optional) A list of IP rules for accessing the storage account.
+      - `virtual_network_subnet_ids` - (Optional) A set of virtual network subnet IDs.
+      - `ip_rules` - (Optional) A set of IP rules for accessing the storage account.
       - `bypass` - (Optional) Specifies which services bypass network rules. Defaults to ["AzureServices"].
     - `tags` - (Optional) A map of tags to assign to the storage account.
   DESCRIPTION

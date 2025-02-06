@@ -25,7 +25,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 }
 
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.5.1"
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.6.0"
   count  = var.storage_account != null ? 1 : 0
 
   name                              = var.storage_account.name
