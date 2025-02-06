@@ -21,7 +21,7 @@ variable "storage_account" {
   type = object({
     name                              = string
     account_tier                      = optional(string, "Standard")
-    account_replication_type          = optional(string, "ZRS")
+    account_replication_type          = optional(string, "GRS")
     access_tier                       = optional(string, "Cool")
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
@@ -54,7 +54,7 @@ variable "storage_account" {
     tags                            = optional(map(string), {})
   })
   validation {
-    condition     = var.boot_diag_storage_account.storage_management_policy.move_to_archive_after_days != null && contains(["LRS", "GRS", "RAGRS"], var.boot_diag_storage_account.account_replication_type) || var.boot_diag_storage_account.storage_management_policy.move_to_archive_after_days == null
+    condition     = (var.storage_account.storage_management_policy.move_to_archive_after_days != null && contains(["LRS", "GRS", "RAGRS"], var.storage_account.account_replication_type)) || var.storage_account.storage_management_policy.move_to_archive_after_days == null
     error_message = "account_replication_type must be either 'LRS', 'GRS' or 'RAGRS' when archive tiering is enabled"
   }
   default = null
