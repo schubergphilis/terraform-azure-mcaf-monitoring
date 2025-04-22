@@ -50,7 +50,6 @@ variable "storage_account" {
     cmk_key_name                      = optional(string, null)
     system_assigned_identity_enabled  = optional(bool, false)
     user_assigned_identities          = optional(set(string), [])
-    enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({
       state                         = optional(string, "Unlocked")
       allow_protected_append_writes = optional(bool, true)

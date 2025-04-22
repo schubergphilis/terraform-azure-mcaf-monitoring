@@ -37,6 +37,7 @@ module "key_vault" {
     expiration_date = var.key_vault.cmk_expiration_date
   }
 
+
   # key_vault = {
   #   resource_group_name = azurerm_resource_group.this.name
   #   location            = var.location
@@ -61,14 +62,14 @@ module "storage_account" {
   account_kind                      = "StorageV2"
   access_tier                       = var.storage_account.access_tier
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
-  cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
-  cmk_key_name                      = var.storage_account.cmk_key_name
+  enable_cmk_encryption             = true
+  cmk_key_vault_id                  = azurerm_key_vault.this[0].id
+  cmk_key_name                      = "cmkrsa"
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
   immutability_policy               = var.storage_account.immutability_policy
   network_configuration             = var.storage_account.network_configuration
   storage_management_policy         = var.storage_account.storage_management_policy
-  cnmk_key_vault_id                 = module.key_vault[0].key_vault_id
   tags = merge(
     try(var.tags),
     try(var.storage_account.tags)
@@ -76,7 +77,7 @@ module "storage_account" {
 }
 
 resource "azurerm_log_analytics_data_export_rule" "this" {
-  count = var.storage_account != null && try(var.storage_account.enable_law_data_export, false) ? 1 : 0
+  count = var.enable_archiving ? 1 : 0
 
   name                    = "Export-To-Storage"
   resource_group_name     = azurerm_resource_group.this.name
