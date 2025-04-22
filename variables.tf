@@ -24,7 +24,7 @@ variable "enable_archiving" {
 }
 
 variable "tenant_id" {
-  type        = optional(string)
+  type        = string
   description = "The tenant ID of the Azure subscription."
   default     = null
 }
