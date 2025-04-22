@@ -32,7 +32,7 @@ module "key_vault" {
   resource_group_name = azurerm_resource_group.this.name
   location            = var.location
   network_bypass      = "AzureServices"
-  tenant_id           = var.key_vault.tenant_id
+  tenant_id           = var.tenant_id
   customer_managed_key = {
     expiration_date = var.key_vault.cmk_expiration_date
   }
@@ -49,7 +49,6 @@ module "key_vault" {
   # }
   tags = var.tags
 }
-
 
 module "storage_account" {
   source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"

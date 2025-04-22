@@ -23,11 +23,15 @@ variable "enable_archiving" {
   default     = false
 }
 
+variable "tenant_id" {
+  type        = optional(string)
+  description = "The tenant ID of the Azure subscription."
+}
+
 variable "key_vault" {
   type = object({
     name                = optional(string)
     cmk_expiration_date = optional(string)
-    tenant_id           = optional(string)
   })
   description = <<DESCRIPTION
     Configure the Key Vault for customer-managed keys (CMK) for the storage account.
