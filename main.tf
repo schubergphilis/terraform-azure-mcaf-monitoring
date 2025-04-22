@@ -32,10 +32,10 @@ module "key_vault" {
   resource_group_name = azurerm_resource_group.this.name
   location            = var.location
   network_bypass      = "AzureServices"
-  cmk_keys_create     = true
-  cmk_expiration_date = var.key_vault.cmk_expiration_date
   tenant_id           = var.key_vault.tenant_id
-
+  customer_managed_key = {
+    expiration_date = var.key_vault.cmk_expiration_date
+  }
 
   # key_vault = {
   #   resource_group_name = azurerm_resource_group.this.name
