@@ -25,7 +25,7 @@ variable "enable_archiving" {
 
 variable "key_vault" {
   type = object({
-    name =  string
+    name                = string
     cmk_expiration_date = string
     tenant_id           = string
   })

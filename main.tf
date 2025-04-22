@@ -27,15 +27,25 @@ resource "azurerm_log_analytics_workspace" "this" {
 module "key_vault" {
   source = "github.com/schubergphilis/terraform-azure-mcaf-key-vault?ref=v1.0.1"
   count  = var.enable_archiving ? 1 : 0
-  key_vault = {
-    resource_group_name = azurerm_resource_group.this.name
-    location            = var.location
-    name                = var.key_vault.name
-    tenant_id           = var.key_vault.tenant_id
-    network_bypass      = "AzureServices"
-    cmk_keys_create     = var.initial ? false : true
-    cmk_expiration_date = var.key_vault.cmk_expiration_date
-  }
+
+  name                = var.key_vault.name
+  resource_group_name = azurerm_resource_group.this.name
+  location            = var.location
+  network_bypass      = "AzureServices"
+  cmk_keys_create     = true
+  cmk_expiration_date = var.key_vault.cmk_expiration_date
+  tenant_id           = var.key_vault.tenant_id
+
+
+  # key_vault = {
+  #   resource_group_name = azurerm_resource_group.this.name
+  #   location            = var.location
+  #   name                = var.key_vault.name
+  #   tenant_id           = var.key_vault.tenant_id
+  #   network_bypass      = "AzureServices"
+  #   cmk_keys_create     = var.initial ? false : true
+  #   cmk_expiration_date = var.key_vault.cmk_expiration_date
+  # }
   tags = var.tags
 }
 
