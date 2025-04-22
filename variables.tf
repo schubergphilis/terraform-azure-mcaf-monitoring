@@ -25,9 +25,9 @@ variable "enable_archiving" {
 
 variable "key_vault" {
   type = object({
-    name                = string
-    cmk_expiration_date = string
-    tenant_id           = string
+    name                = optional(string)
+    cmk_expiration_date = optional(string)
+    tenant_id           = optional(string)
   })
   description = <<DESCRIPTION
     Configure the Key Vault for customer-managed keys (CMK) for the storage account.
