@@ -63,7 +63,7 @@ module "storage_account" {
   access_tier                       = var.storage_account.access_tier
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
   enable_cmk_encryption             = true
-  cmk_key_vault_id                  = azurerm_key_vault.this[0].id
+  cmk_key_vault_id                  = module.key_vault[0].id
   cmk_key_name                      = "cmkrsa"
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
