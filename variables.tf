@@ -17,6 +17,28 @@ variable "log_analytics_workspace" {
   })
 }
 
+variable "enable_archiving" {
+  type        = bool
+  description = "Enable archiving of logs to a storage account."
+  default     = false
+}
+
+variable "key_vault" {
+  type = object({
+    name =  string
+    cmk_expiration_date = string
+    tenant_id           = string
+  })
+  description = <<DESCRIPTION
+    Configure the Key Vault for customer-managed keys (CMK) for the storage account.
+
+    The following arguments are supported:
+    
+    - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
+  DESCRIPTION
+  default     = null
+}
+
 variable "storage_account" {
   type = object({
     name                              = string

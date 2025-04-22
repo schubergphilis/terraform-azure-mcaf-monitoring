@@ -24,10 +24,25 @@ resource "azurerm_log_analytics_workspace" "this" {
   )
 }
 
-module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.7.0"
-  count  = var.storage_account != null ? 1 : 0
+module "key_vault" {
+  source = "github.com/schubergphilis/terraform-azure-mcaf-key-vault?ref=v1.0.1"
+  count  = var.enable_archiving ? 1 : 0
+  key_vault = {
+    resource_group_name = azurerm_resource_group.this.name
+    location            = var.location
+    name                = var.key_vault.name
+    tenant_id           = var.key_vault.tenant_id
+    network_bypass      = "AzureServices"
+    cmk_keys_create     = var.initial ? false : true
+    cmk_expiration_date = var.key_vault.cmk_expiration_date
+  }
+  tags = var.tags
+}
 
+
+module "storage_account" {
+  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"
+  count                             = var.enable_archiving ? 1 : 0
   name                              = var.storage_account.name
   location                          = var.location
   resource_group_name               = azurerm_resource_group.this.name
@@ -43,6 +58,7 @@ module "storage_account" {
   immutability_policy               = var.storage_account.immutability_policy
   network_configuration             = var.storage_account.network_configuration
   storage_management_policy         = var.storage_account.storage_management_policy
+  cnmk_key_vault_id                 = module.key_vault[0].key_vault_id
   tags = merge(
     try(var.tags),
     try(var.storage_account.tags)
