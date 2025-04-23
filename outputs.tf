@@ -1,5 +1,5 @@
 output "storage_account_id" {
-  value = var.storage_account != null ? module.storage_account[0].id : null
+  value = var.enable_archiving && length(module.storage_account) > 0 ? module.storage_account[0].id : null
 }
 
 output "resource_group_id" {
