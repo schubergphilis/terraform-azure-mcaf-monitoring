@@ -51,7 +51,7 @@ module "key_vault" {
 }
 
 module "storage_account" {
-  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=bugs"
+  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v1.0.1"
   count                             = var.enable_archiving ? 1 : 0
 
   name                              = var.storage_account.name
@@ -62,9 +62,7 @@ module "storage_account" {
   account_kind                      = "StorageV2"
   access_tier                       = var.storage_account.access_tier
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
-  enable_cmk_encryption             = true
   cmk_key_vault_id                  = module.key_vault[0].key_vault_id
-  cmk_key_name                      = "cmkrsa"
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
   immutability_policy               = var.storage_account.immutability_policy
