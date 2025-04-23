@@ -51,7 +51,7 @@ module "key_vault" {
 }
 
 module "storage_account" {
-  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v1.0.1"
+  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"
   count                             = var.enable_archiving ? 1 : 0
 
   name                              = var.storage_account.name
