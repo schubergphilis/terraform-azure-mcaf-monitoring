@@ -26,7 +26,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 
 module "key_vault" {
   source = "github.com/schubergphilis/terraform-azure-mcaf-key-vault?ref=v1.0.1"
-  count  = var.enable_archiving ? 1 : 0
+  count  = var.enable_archiving && var.key_vault.deploy_key_vault ? 1 : 0
 
   name                = var.key_vault.name
   resource_group_name = azurerm_resource_group.this.name
@@ -51,8 +51,8 @@ module "key_vault" {
 }
 
 module "storage_account" {
-  source                            = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"
-  count                             = var.enable_archiving ? 1 : 0
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"
+  count  = var.enable_archiving ? 1 : 0
 
   name                              = var.storage_account.name
   location                          = var.location
@@ -62,7 +62,8 @@ module "storage_account" {
   account_kind                      = "StorageV2"
   access_tier                       = var.storage_account.access_tier
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
-  cmk_key_vault_id                  = module.key_vault[0].key_vault_id
+  cmk_key_vault_id                  = try(module.key_vault[0].key_vault_id, var.storage_account.cmk_key_vault_id)
+  cmk_key_name                      = var.storage_account.cmk_key_name
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
   immutability_policy               = var.storage_account.immutability_policy

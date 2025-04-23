@@ -31,6 +31,7 @@ variable "tenant_id" {
 
 variable "key_vault" {
   type = object({
+    deploy_key_vault    = optional(bool, false)
     name                = optional(string)
     cmk_expiration_date = optional(string)
   })
@@ -51,7 +52,7 @@ variable "storage_account" {
     account_replication_type          = optional(string, "GRS")
     access_tier                       = optional(string, "Cool")
     infrastructure_encryption_enabled = optional(bool, true)
-    enable_cmk_encryption           = optional(bool, true)
+    enable_cmk_encryption             = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
