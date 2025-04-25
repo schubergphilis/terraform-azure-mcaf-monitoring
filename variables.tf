@@ -42,7 +42,7 @@ variable "key_vault" {
     
     - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
   DESCRIPTION
-  default     = null
+  default     = {}
 }
 
 variable "storage_account" {
@@ -53,7 +53,6 @@ variable "storage_account" {
     access_tier                       = optional(string, "Cool")
     infrastructure_encryption_enabled = optional(bool, true)
     enable_cmk_encryption             = optional(bool, true)
-    cmk_key_vault_id                  = optional(string, null)
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
