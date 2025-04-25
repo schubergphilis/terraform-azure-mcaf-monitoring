@@ -40,6 +40,8 @@ variable "key_vault" {
 
     The following arguments are supported:
     
+    - `deploy_key_vault` - (Optional) Whether to deploy a Key Vault. Defaults to false.
+    - `name` - (Optional) The name of the Key Vault. Defaults to null.
     - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
   DESCRIPTION
   default     = {}

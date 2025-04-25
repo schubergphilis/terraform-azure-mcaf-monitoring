@@ -40,10 +40,11 @@ module "with_storage_account" {
     name                     = "examplestorageaccount"
     access_tier              = "Cool"
     account_replication_type = "ZRS"
+    cmk_key_vault_id         = "Resource ID of the Key Vault"
     log_retention_days       = 1095 # 3 Years
     snapshot_retention_days  = 90
   }
-
+  tenant_id = "00000000-0000-0000-0000-000000000000"
   location = "West Europe"
   tags     = {}
 }
