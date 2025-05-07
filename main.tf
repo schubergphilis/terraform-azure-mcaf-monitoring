@@ -26,7 +26,7 @@ resource "azurerm_log_analytics_workspace" "this" {
 
 module "key_vault" {
   source = "github.com/schubergphilis/terraform-azure-mcaf-key-vault?ref=v1.0.1"
-  count  = var.key_vault.deploy_key_vault ? 1 : 0
+  count  = var.key_vault != null ? 1 : 0
 
   name                = var.key_vault.name
   resource_group_name = azurerm_resource_group.this.name

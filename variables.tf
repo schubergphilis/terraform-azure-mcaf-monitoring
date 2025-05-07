@@ -25,16 +25,14 @@ variable "tenant_id" {
 
 variable "key_vault" {
   type = object({
-    deploy_key_vault    = optional(bool, false)
     name                = optional(string)
     cmk_expiration_date = optional(string)
   })
   description = <<DESCRIPTION
-    Configure the Key Vault for customer-managed keys (CMK) for the storage account.
+    Create a new Key Vault for CMK. You can also use an existing Key Vault by setting the `cmk_key_vault_id` in the `storage_account` variable.
 
     The following arguments are supported:
     
-    - `deploy_key_vault` - (Optional) Whether to deploy a new Key Vault. Defaults to false.
     - `name` - (Optional) The name of the Key Vault. Defaults to null.
     - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
   DESCRIPTION
