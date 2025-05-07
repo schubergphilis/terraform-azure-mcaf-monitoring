@@ -36,7 +36,7 @@ variable "key_vault" {
     - `name` - (Optional) The name of the Key Vault. Defaults to null.
     - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
   DESCRIPTION
-  default     = {}
+  default     = null
 }
 
 variable "storage_account" {
