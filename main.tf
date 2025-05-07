@@ -59,6 +59,7 @@ module "storage_account" {
   immutability_policy               = var.storage_account.immutability_policy
   network_configuration             = var.storage_account.network_configuration
   storage_management_policy         = var.storage_account.storage_management_policy
+  shared_access_key_enabled         = var.storage_account.shared_access_key_enabled
   tags = merge(
     try(var.tags),
     try(var.storage_account.tags)
