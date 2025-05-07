@@ -17,12 +17,6 @@ variable "log_analytics_workspace" {
   })
 }
 
-variable "enable_archiving" {
-  type        = bool
-  description = "Enable archiving of logs to a storage account."
-  default     = false
-}
-
 variable "tenant_id" {
   type        = string
   description = "The tenant ID of the Azure subscription."
@@ -40,7 +34,7 @@ variable "key_vault" {
 
     The following arguments are supported:
     
-    - `deploy_key_vault` - (Optional) Whether to deploy a Key Vault. Defaults to false.
+    - `deploy_key_vault` - (Optional) Whether to deploy a new Key Vault. Defaults to false.
     - `name` - (Optional) The name of the Key Vault. Defaults to null.
     - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
   DESCRIPTION
@@ -59,6 +53,7 @@ variable "storage_account" {
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
+    enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({
       state                         = optional(string, "Unlocked")
       allow_protected_append_writes = optional(bool, true)
