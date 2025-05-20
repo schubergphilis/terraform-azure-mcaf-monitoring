@@ -17,6 +17,28 @@ variable "log_analytics_workspace" {
   })
 }
 
+variable "tenant_id" {
+  type        = string
+  description = "The tenant ID of the Azure subscription."
+  default     = null
+}
+
+variable "key_vault" {
+  type = object({
+    name                = optional(string)
+    cmk_expiration_date = optional(string)
+  })
+  description = <<DESCRIPTION
+    Create a new Key Vault for CMK. You can also use an existing Key Vault by setting the `cmk_key_vault_id` in the `storage_account` variable.
+
+    The following arguments are supported:
+    
+    - `name` - (Optional) The name of the Key Vault. Defaults to null.
+    - `cmk_expiration_date` - (Optional) The expiration date of the customer-managed key. Defaults to null.
+  DESCRIPTION
+  default     = null
+}
+
 variable "storage_account" {
   type = object({
     name                              = string
@@ -25,8 +47,8 @@ variable "storage_account" {
     access_tier                       = optional(string, "Cool")
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
-    cmk_key_name                      = optional(string, null)
-    system_assigned_identity_enabled  = optional(bool, false)
+    cmk_key_name                      = optional(string, "cmkrsa")
+    system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
     enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({

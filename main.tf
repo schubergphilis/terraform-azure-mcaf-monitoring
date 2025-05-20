@@ -24,8 +24,23 @@ resource "azurerm_log_analytics_workspace" "this" {
   )
 }
 
+module "key_vault" {
+  source = "github.com/schubergphilis/terraform-azure-mcaf-key-vault?ref=v1.0.1"
+  count  = var.key_vault != null ? 1 : 0
+
+  name                = var.key_vault.name
+  resource_group_name = azurerm_resource_group.this.name
+  location            = var.location
+  network_bypass      = "AzureServices"
+  tenant_id           = var.tenant_id
+  customer_managed_key = {
+    expiration_date = var.key_vault.cmk_expiration_date
+  }
+  tags = var.tags
+}
+
 module "storage_account" {
-  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.7.0"
+  source = "github.com/schubergphilis/terraform-azure-mcaf-storage-account.git?ref=v0.8.4"
   count  = var.storage_account != null ? 1 : 0
 
   name                              = var.storage_account.name
@@ -36,7 +51,8 @@ module "storage_account" {
   account_kind                      = "StorageV2"
   access_tier                       = var.storage_account.access_tier
   infrastructure_encryption_enabled = var.storage_account.infrastructure_encryption_enabled
-  cmk_key_vault_id                  = var.storage_account.cmk_key_vault_id
+  enable_cmk_encryption             = true
+  cmk_key_vault_id                  = try(module.key_vault[0].key_vault_id, var.storage_account.cmk_key_vault_id)
   cmk_key_name                      = var.storage_account.cmk_key_name
   system_assigned_identity_enabled  = var.storage_account.system_assigned_identity_enabled
   user_assigned_identities          = var.storage_account.user_assigned_identities
