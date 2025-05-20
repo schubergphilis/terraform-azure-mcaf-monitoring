@@ -47,7 +47,6 @@ variable "storage_account" {
     access_tier                       = optional(string, "Cool")
     infrastructure_encryption_enabled = optional(bool, true)
     cmk_key_vault_id                  = optional(string, null)
-    enable_cmk_encryption             = optional(bool, true)
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
