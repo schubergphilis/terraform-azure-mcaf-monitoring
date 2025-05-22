@@ -66,7 +66,7 @@ module "storage_account" {
 }
 
 resource "azurerm_log_analytics_data_export_rule" "this" {
-  count = var.table_names != null ? 1 : 0
+  count = var.table_names_to_export != null ? 1 : 0
 
   name                    = "Export-To-Storage"
   resource_group_name     = azurerm_resource_group.this.name
