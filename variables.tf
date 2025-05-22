@@ -50,7 +50,6 @@ variable "storage_account" {
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
-    enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({
       state                         = optional(string, "Unlocked")
       allow_protected_append_writes = optional(bool, true)
@@ -113,6 +112,12 @@ variable "storage_account" {
   DESCRIPTION
 
   default = null
+}
+
+variable "table_names_to_export" {
+  type        = list(string)
+  description = "List of table names to export to the storage account. Only supported when `enable_law_data_export` is set to true."
+  default     = null
 }
 
 variable "tags" {

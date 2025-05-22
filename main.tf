@@ -66,12 +66,12 @@ module "storage_account" {
 }
 
 resource "azurerm_log_analytics_data_export_rule" "this" {
-  count = var.storage_account != null && try(var.storage_account.enable_law_data_export, false) ? 1 : 0
+  count = var.table_names != null ? 1 : 0
 
   name                    = "Export-To-Storage"
   resource_group_name     = azurerm_resource_group.this.name
   workspace_resource_id   = azurerm_log_analytics_workspace.this.id
   destination_resource_id = module.storage_account[0].id
-  table_names             = local.log_analytics_table_names
+  table_names             = var.table_names_to_export
   enabled                 = true
 }
