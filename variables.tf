@@ -50,7 +50,6 @@ variable "storage_account" {
     cmk_key_name                      = optional(string, "cmkrsa")
     system_assigned_identity_enabled  = optional(bool, true)
     user_assigned_identities          = optional(set(string), [])
-    enable_law_data_export            = optional(bool, false)
     immutability_policy = optional(object({
       state                         = optional(string, "Unlocked")
       allow_protected_append_writes = optional(bool, true)
@@ -89,7 +88,6 @@ variable "storage_account" {
     - `cmk_key_name` - (Optional) The name of the customer-managed key in the Key Vault. Defaults to null.
     - `system_assigned_identity_enabled` - (Optional) Whether a system-assigned identity is enabled. Defaults to false.
     - `user_assigned_identities` - (Optional) A set of user-assigned identities.
-    - `enable_law_data_export` - (Optional) Enable the Export rule for Log Analytics Data. Defaults to false.
     - `immutability_policy` - (Optional) Immutability policy configuration. If undefined will not create a Immutability Policy
       - `state` - (Optional) The state of the immutability policy. Defaults to `Unlocked`.
       - `allow_protected_append_writes` - (Optional) Whether protected append writes are allowed. Defaults to true.
@@ -113,6 +111,12 @@ variable "storage_account" {
   DESCRIPTION
 
   default = null
+}
+
+variable "table_names_to_export" {
+  type        = list(string)
+  description = "List of table names to export to the storage account. This will deploy a Log Analytics Data Export Rule."
+  default     = null
 }
 
 variable "tags" {
