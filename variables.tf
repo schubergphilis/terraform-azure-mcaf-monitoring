@@ -116,7 +116,7 @@ variable "storage_account" {
 
 variable "table_names_to_export" {
   type        = list(string)
-  description = "List of table names to export to the storage account. Only supported when `enable_law_data_export` is set to true."
+  description = "List of table names to export to the storage account. This will deploy a Log Analytics Data Export Rule."
   default     = null
 }
 
