@@ -88,7 +88,6 @@ variable "storage_account" {
     - `cmk_key_name` - (Optional) The name of the customer-managed key in the Key Vault. Defaults to null.
     - `system_assigned_identity_enabled` - (Optional) Whether a system-assigned identity is enabled. Defaults to false.
     - `user_assigned_identities` - (Optional) A set of user-assigned identities.
-    - `enable_law_data_export` - (Optional) Enable the Export rule for Log Analytics Data. Defaults to false.
     - `immutability_policy` - (Optional) Immutability policy configuration. If undefined will not create a Immutability Policy
       - `state` - (Optional) The state of the immutability policy. Defaults to `Unlocked`.
       - `allow_protected_append_writes` - (Optional) Whether protected append writes are allowed. Defaults to true.
